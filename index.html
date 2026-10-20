@@ -1,0 +1,1070 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#edf1ec"><meta name="description" content="A free skill-sharing community for newsletter readers. Find a mentor, swap skills, learn in short sprints, and share your work."><title>Skill Commons — learn together</title><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: a workbench. Wordmark and live counts on top, a sticky tab rail, then one working surface per tab that folds from two columns to one on a phone. */
+:root{
+  --bg:#EDF1EC;
+  --surface:#FAFBF8;
+  --surface-2:#E2EAE4;
+  --ink:#14201B;
+  --muted:#52625A;
+  --line:#C6D3CA;
+  --accent:#0E6B52;
+  --accent-ink:#FFFFFF;
+  --accent-soft:#D5E8DE;
+  --hot:#B93C0B;
+  --hot-soft:#F6DFD1;
+  --f-display:'Bricolage Grotesque','Avenir Next','Segoe UI',system-ui,sans-serif;
+  --f-body:'Source Sans 3','Segoe UI',system-ui,-apple-system,sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1613;--surface:#15201B;--surface-2:#1C2A23;--ink:#E7EFEA;--muted:#9DAEA5;--line:#2C3C34;
+    --accent:#5FD3A8;--accent-ink:#06281D;--accent-soft:#1B3A2E;--hot:#FF9A63;--hot-soft:#3A2418;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1613;--surface:#15201B;--surface-2:#1C2A23;--ink:#E7EFEA;--muted:#9DAEA5;--line:#2C3C34;
+  --accent:#5FD3A8;--accent-ink:#06281D;--accent-soft:#1B3A2E;--hot:#FF9A63;--hot-soft:#3A2418;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--ink);font:16px/1.55 var(--f-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 64px;-webkit-text-size-adjust:100%;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+.wrap{max-width:1080px;margin:0 auto}
+h1,h2,h3,h4{font-family:var(--f-display);margin:0;line-height:1.1;text-wrap:balance}
+h2{font-size:clamp(26px,4vw,36px);font-weight:700;letter-spacing:-.015em}
+h3{font-size:20px;font-weight:700}
+h4{font-size:16px;font-weight:700}
+p{margin:0}
+a{color:var(--accent)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--f-mono)}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.label{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+/* masthead */
+.masthead{padding-block:30px 20px;display:grid;gap:20px}
+.brandline{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px}
+.brand{font-family:var(--f-display);font-weight:800;font-size:clamp(38px,7vw,64px);letter-spacing:-.03em;line-height:.95}
+.brand span{color:var(--accent)}
+.tagline{max-width:56ch;color:var(--muted);font-size:18px;margin-top:10px}
+.modebox{display:grid;gap:6px;justify-items:start;font-size:14px;color:var(--muted);max-width:34ch}
+.pill{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:12px;letter-spacing:.04em;padding:4px 10px;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
+.pill i{width:8px;height:8px;border-radius:50%;background:var(--muted);display:inline-block}
+.pill.live i{background:var(--accent)}
+.counters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.counter{border-top:2px solid var(--ink);padding-top:8px}
+.counter b{display:block;font-family:var(--f-mono);font-weight:500;font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums}
+.counter span{font-size:14px;color:var(--muted)}
+
+/* tabs */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line);display:flex;gap:4px;overflow-x:auto;padding-block:8px;scrollbar-width:thin}
+.tab{flex:0 0 auto;border:1px solid transparent;background:transparent;padding:9px 14px;border-radius:8px;font-weight:600;cursor:pointer;white-space:nowrap}
+.tab:hover{background:var(--surface-2)}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+.panel{padding-top:26px;display:grid;gap:22px}
+.lede{display:grid;gap:10px;max-width:68ch}
+.lede p{color:var(--muted);font-size:18px}
+
+/* shared parts */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;min-width:0}
+.card.flat{background:transparent}
+.stack{display:grid;gap:12px;min-width:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,310px),1fr));gap:14px}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+@media (max-width:720px){.cols,.row2{grid-template-columns:minmax(0,1fr)}.counters{grid-template-columns:repeat(2,minmax(0,1fr))}}
+label{display:grid;gap:5px;font-weight:600;font-size:14px;min-width:0}
+input,select,textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-weight:400;font-size:16px;min-width:0}
+textarea{resize:vertical;min-height:84px}
+input::placeholder,textarea::placeholder{color:var(--muted);opacity:.8}
+form{display:grid;gap:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px;border-radius:8px;border:1px solid var(--ink);background:transparent;font-weight:600;cursor:pointer;text-decoration:none}
+.btn:hover{background:var(--surface-2)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.small{padding:6px 11px;font-size:14px}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--f-mono);font-size:13px;padding:4px 10px;border-radius:6px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink)}
+button.chip{cursor:pointer}
+button.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.badge{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;border:1px solid currentColor}
+.badge.ex{color:var(--muted)}
+.badge.free{color:var(--accent);background:var(--accent-soft);border-color:transparent}
+.badge.hot{color:var(--hot);background:var(--hot-soft);border-color:transparent}
+.empty{border:1px dashed var(--line);border-radius:10px;padding:22px;color:var(--muted);display:grid;gap:10px;justify-items:start}
+details.card>summary{cursor:pointer;font-family:var(--f-display);font-weight:700;font-size:20px;list-style:none}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary::after{content:"+";float:right;font-family:var(--f-mono)}
+details.card[open]>summary::after{content:"\2212"}
+details.card[open]>summary{margin-bottom:14px}
+.callout{border-left:4px solid var(--hot);background:var(--hot-soft);padding:12px 16px;border-radius:0 8px 8px 0;font-size:15px}
+
+/* mentors */
+.mcard{display:grid;gap:12px;align-content:start}
+.mhead{display:flex;gap:12px;align-items:center;min-width:0}
+.avatar{flex:0 0 46px;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:18px;background:var(--accent-soft);color:var(--accent)}
+.avatar.a1{background:var(--hot-soft);color:var(--hot)}
+.avatar.a2{background:var(--surface-2);color:var(--ink)}
+.mname{font-family:var(--f-display);font-weight:700;font-size:18px;overflow-wrap:anywhere}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px;color:var(--muted)}
+.meta b{color:var(--ink);font-weight:600}
+.reqform{border-top:1px dashed var(--line);padding-top:14px}
+.done-box{border-top:1px dashed var(--line);padding-top:14px;display:grid;gap:10px}
+.path{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;counter-reset:s}
+.path>div{padding:4px 16px 4px 0;position:relative;display:grid;gap:4px;align-content:start}
+.path>div::before{counter-increment:s;content:counter(s);font-family:var(--f-mono);font-size:13px;width:26px;height:26px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center}
+.path>div::after{content:"";position:absolute;top:13px;left:32px;right:6px;height:1px;background:var(--line)}
+.path>div:last-child::after{display:none}
+@media (max-width:720px){.path{grid-template-columns:minmax(0,1fr);gap:14px}.path>div::after{display:none}}
+
+/* swap */
+.sw-item{display:grid;gap:6px}
+.sw-item .top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.sw-item strong{font-family:var(--f-display);font-size:18px}
+.bridge{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:center}
+.bridge .side{background:var(--surface-2);border-radius:8px;padding:10px 12px;display:grid;gap:2px;min-width:0}
+.bridge .arrows{font-family:var(--f-mono);color:var(--accent);text-align:center;font-size:13px;display:grid}
+@media (max-width:560px){.bridge{grid-template-columns:minmax(0,1fr)}}
+.seg{display:inline-grid;grid-auto-flow:column;border:1px solid var(--ink);border-radius:8px;overflow:hidden;width:max-content;max-width:100%}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label{padding:8px 18px;cursor:pointer;font-weight:600;display:block}
+.seg input:checked+span{background:var(--ink);color:var(--bg)}
+.seg span{display:block;padding:8px 18px}
+.seg label{padding:0;position:relative}
+.seg input:focus-visible+span{outline:3px solid var(--accent);outline-offset:-3px}
+
+/* learn */
+.sprints{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:12px}
+.sprint{text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;cursor:pointer;display:grid;gap:8px;align-content:start}
+.sprint:hover{border-color:var(--ink)}
+.sprint[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 2px var(--accent)}
+.sprint h4{font-size:18px}
+.bar{height:6px;background:var(--surface-2);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent)}
+.stats{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center}
+.stat b{font-family:var(--f-mono);font-weight:500;font-size:22px;margin-right:6px}
+.ring{width:72px;height:72px;flex:0 0 72px}
+.ring text{font-family:var(--f-mono);font-size:16px;fill:var(--ink)}
+.step{border:1px solid var(--line);border-radius:10px;background:var(--surface);overflow:hidden}
+.step>button.sh{all:unset;box-sizing:border-box;width:100%;display:flex;gap:12px;align-items:center;padding:14px 16px;cursor:pointer}
+.step>button.sh:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+.step .num{flex:0 0 28px;width:28px;height:28px;border-radius:50%;border:2px solid var(--ink);display:grid;place-items:center;font-family:var(--f-mono);font-size:13px}
+.step.done .num{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.step .sb{padding:0 16px 18px 56px;display:grid;gap:14px}
+@media (max-width:560px){.step .sb{padding-left:16px}}
+.tryit{display:flex;gap:10px;align-items:flex-start;background:var(--accent-soft);border-radius:8px;padding:12px}
+.tryit input{width:20px;height:20px;margin-top:2px;flex:0 0 20px;accent-color:var(--accent)}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:10px 12px;cursor:pointer}
+.opt:hover{border-color:var(--ink)}
+.opt.right{border-color:var(--accent);background:var(--accent-soft)}
+.opt.wrong{border-color:var(--hot);background:var(--hot-soft)}
+.badge-big{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center}
+.medal{width:64px;height:64px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:26px;box-shadow:0 0 0 6px var(--accent-soft)}
+
+/* ask */
+.qcard{display:grid;gap:12px}
+.qcard .q{font-family:var(--f-display);font-weight:700;font-size:20px;overflow-wrap:anywhere}
+.ans{border-left:3px solid var(--line);padding-left:12px;display:grid;gap:2px;overflow-wrap:anywhere}
+
+/* launch */
+.checks{display:grid;gap:8px}
+.check{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);cursor:pointer}
+.check input{width:20px;height:20px;margin-top:2px;flex:0 0 20px;accent-color:var(--accent)}
+.check.on{background:var(--accent-soft);border-color:transparent}
+.tpl{border:1px solid var(--line);border-radius:10px;background:var(--surface);overflow:hidden}
+.tpl-h{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.tpl pre{margin:0;padding:12px;white-space:pre-wrap;overflow-wrap:anywhere;font:14px/1.5 var(--f-mono)}
+#issue-out{font:14px/1.5 var(--f-mono);min-height:280px}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;z-index:40;max-width:min(92vw,520px);font-size:15px}
+.switch{display:inline-flex;gap:8px;align-items:center;font-weight:400;font-size:14px;cursor:pointer;color:var(--muted)}
+.switch input{width:18px;height:18px;accent-color:var(--accent)}
+@media (prefers-reduced-motion:no-preference){.bar i{transition:width .4s ease}.ring circle.fg{transition:stroke-dasharray .5s ease}}
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="brandline">
+      <div>
+        <h1 class="brand">Skill <span>Commons</span></h1>
+        <p class="tagline">Free mentorship and skill swaps for the readers of a newsletter. Teach one thing, learn one thing, pass it on.</p>
+      </div>
+      <div class="modebox">
+        <span class="pill" id="mode-pill"><i></i><span id="mode-text">Checking storage</span></span>
+        <span id="mode-note"></span>
+        <label class="switch"><input type="checkbox" id="ex-toggle" checked> Show example entries</label>
+      </div>
+    </div>
+    <div class="counters" aria-label="Community counts">
+      <div class="counter"><b id="c-mentors">0</b><span>mentors listed</span></div>
+      <div class="counter"><b id="c-needs">0</b><span>open needs</span></div>
+      <div class="counter"><b id="c-sessions">0</b><span>free sessions requested</span></div>
+      <div class="counter"><b id="c-steps">0</b><span>lesson steps you finished</span></div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button class="tab" role="tab" id="t-mentors" data-act="tab" data-tab="mentors" aria-selected="true">Mentors</button>
+    <button class="tab" role="tab" id="t-swap" data-act="tab" data-tab="swap" aria-selected="false">Swap board</button>
+    <button class="tab" role="tab" id="t-learn" data-act="tab" data-tab="learn" aria-selected="false">Learn</button>
+    <button class="tab" role="tab" id="t-ask" data-act="tab" data-tab="ask" aria-selected="false">Ask the room</button>
+    <button class="tab" role="tab" id="t-launch" data-act="tab" data-tab="launch" aria-selected="false">Launch on Substack</button>
+  </nav>
+
+  <!-- MENTORS -->
+  <section class="panel" id="p-mentors" role="tabpanel" aria-labelledby="t-mentors">
+    <div class="lede">
+      <h2>Free mentorship, one skill at a time</h2>
+      <p>Every mentor here gives one to four hours a month and charges nothing. Learners pay it back by teaching something to the next person.</p>
+      <div class="chips"><span class="badge free">Always free</span><span class="badge free">1 to 4 hours a month</span><span class="badge free">Pay it forward</span></div>
+    </div>
+
+    <div class="card stack" id="finder">
+      <h3>Find your mentor</h3>
+      <label>What do you want to learn?
+        <input id="f-q" placeholder="For example: GD&amp;T, pricing a project, Python" autocomplete="off">
+      </label>
+      <div class="chips" id="f-cats" aria-label="Skill areas"></div>
+      <div class="row2">
+        <label>Your level
+          <select id="f-level"><option value="">Any level</option><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select>
+        </label>
+        <div class="muted small" id="f-summary" style="align-self:end"></div>
+      </div>
+    </div>
+
+    <div id="mentor-list" class="grid"></div>
+
+    <details class="card" id="become">
+      <summary>Become a mentor</summary>
+      <form data-form="mentor" id="mentor-form">
+        <p class="muted">Three lines are enough. You choose your hours, and you can mark yourself Full at any time.</p>
+        <div class="row2">
+          <label>Name<input name="name" required maxlength="60"></label>
+          <label>Substack handle<input name="handle" placeholder="@yourname" maxlength="60"></label>
+        </div>
+        <label>Skills you can teach (comma separated)<input name="skills" required maxlength="140" placeholder="GD&amp;T, drawing review, SolidWorks"></label>
+        <div class="row2">
+          <label>You teach
+            <select name="level"><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select>
+          </label>
+          <label>Hours per month
+            <select name="hours"><option>1</option><option>2</option><option selected>3</option><option>4</option></select>
+          </label>
+        </div>
+        <div class="row2">
+          <label>Languages<input name="langs" placeholder="English, Hindi" maxlength="60"></label>
+          <label>Time zone<input name="tz" placeholder="IST" maxlength="20"></label>
+        </div>
+        <label>One-line pitch<input name="pitch" required maxlength="140" placeholder="What a learner walks away with after one session"></label>
+        <div><button class="btn primary" type="submit">List me as a free mentor</button></div>
+      </form>
+    </div>
+
+    <div class="card stack">
+      <h3>How a free mentorship runs</h3>
+      <div class="path">
+        <div><h4>Set the goal</h4><p class="muted small">Learner names one skill and one result to reach in four weeks.</p></div>
+        <div><h4>Check the baseline</h4><p class="muted small">First session: the learner shows what they can do today.</p></div>
+        <div><h4>Work on something real</h4><p class="muted small">A real drawing, post or quote, reviewed with feedback.</p></div>
+        <div><h4>Show and pass on</h4><p class="muted small">Learner shows the result, then offers the skill on the swap board.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SWAP -->
+  <section class="panel" id="p-swap" role="tabpanel" aria-labelledby="t-swap" hidden>
+    <div class="lede">
+      <h2>Swap board</h2>
+      <p>List what you can teach and what you want to learn. The board looks for people whose lists fit yours, and flags a perfect swap when both sides match.</p>
+    </div>
+
+    <div class="card stack">
+      <h3>Find my swap</h3>
+      <div class="row2">
+        <label>I can teach<input id="sw-teach" placeholder="For example: CAD modelling" autocomplete="off"></label>
+        <label>I want to learn<input id="sw-want" placeholder="For example: Python" autocomplete="off"></label>
+      </div>
+      <div id="sw-results" class="stack"></div>
+    </div>
+
+    <details class="card" id="postbox">
+      <summary>Post an offer or a need</summary>
+      <form data-form="offer" id="offer-form">
+        <div class="seg" role="radiogroup" aria-label="Type">
+          <label><input type="radio" name="type" value="Offer" checked><span>I can teach</span></label>
+          <label><input type="radio" name="type" value="Need"><span>I want to learn</span></label>
+        </div>
+        <label>Skill<input name="skill" required maxlength="80" placeholder="For example: pricing a first freelance project"></label>
+        <label>Details<textarea name="details" maxlength="300" placeholder="Your level, what you have tried, what a good result looks like"></textarea></label>
+        <div class="row2">
+          <label>Name<input name="name" required maxlength="60"></label>
+          <label>Substack handle<input name="handle" placeholder="@yourname" maxlength="60"></label>
+        </div>
+        <div><button class="btn primary" type="submit">Post to the board</button></div>
+      </form>
+    </details>
+
+    <div class="cols">
+      <div class="stack"><h3>Open needs</h3><div id="needs-list" class="stack"></div></div>
+      <div class="stack"><h3>Offers</h3><div id="offers-list" class="stack"></div></div>
+    </div>
+  </section>
+
+  <!-- LEARN -->
+  <section class="panel" id="p-learn" role="tabpanel" aria-labelledby="t-learn" hidden>
+    <div class="lede">
+      <h2>Learn a skill in four short steps</h2>
+      <p>Each sprint is four steps of about ten minutes: read a short lesson, do one small task, answer one check question. Stuck at any step? Ask a mentor.</p>
+    </div>
+    <div class="stats card">
+      <div class="stat"><b id="l-xp">0</b>points</div>
+      <div class="stat"><b id="l-streak">0</b>day streak</div>
+      <div class="stat"><b id="l-done">0</b>steps done</div>
+    </div>
+    <div class="sprints" id="sprints"></div>
+    <div id="sprint-view" class="stack"></div>
+  </section>
+
+  <!-- ASK -->
+  <section class="panel" id="p-ask" role="tabpanel" aria-labelledby="t-ask" hidden>
+    <div class="lede">
+      <h2>Ask the room</h2>
+      <p>Post one real problem. Anyone with the right skill can answer it. The asker marks it solved when it works.</p>
+    </div>
+    <details class="card" id="askbox">
+      <summary>Ask a question</summary>
+      <form data-form="question" id="question-form">
+        <label>Your question<textarea name="q" required maxlength="400" placeholder="Give the situation and what you already tried"></textarea></label>
+        <div class="row2">
+          <label>Skill area<input name="area" maxlength="60" placeholder="For example: mechanical design"></label>
+          <label>Your name<input name="name" required maxlength="60"></label>
+        </div>
+        <div><button class="btn primary" type="submit">Post question</button></div>
+      </form>
+    </details>
+    <div id="q-list" class="stack"></div>
+  </section>
+
+  <!-- LAUNCH -->
+  <section class="panel" id="p-launch" role="tabpanel" aria-labelledby="t-launch" hidden>
+    <div class="lede">
+      <h2>Launch it on your Substack</h2>
+      <p>Substack does not let a newsletter embed a custom app, so this page lives at its own link and your newsletter sends readers to it. Below is everything to copy and paste.</p>
+    </div>
+
+    <div class="callout">
+      <b>Who can use the shared board.</b> Entries are shared only with people who can open this page signed in to claude.ai. Readers without an account see the page but their posts stay in their own browser. For open sign-ups, link a Google Form to the registry sheet below and paste the form link next to this one.
+    </div>
+
+    <div class="card stack">
+      <h3>Your link</h3>
+      <label>Paste the link you share for this page
+        <input id="l-link" placeholder="https://claude.ai/artifact/..." autocomplete="off">
+      </label>
+      <p class="muted small">The templates below fill this in. Add #mentors, #swap, #learn or #ask to the end of the link to open a specific tab. The page stays private until you share it.</p>
+    </div>
+
+    <div class="cols">
+      <div class="stack">
+        <h3>Rollout checklist</h3>
+        <div class="checks" id="launch-checks"></div>
+      </div>
+      <div class="stack">
+        <h3>Registry sheet</h3>
+        <div class="card stack">
+          <p>A Google Sheet with four tabs (Mentors, Offers and needs, Questions, Sessions) is ready in your Drive. Use it as a sign-up list that does not need an account: connect a Google Form to it.</p>
+          <div><a class="btn" href="https://docs.google.com/spreadsheets/d/1bHnICaNNyelr0CCPamKkTRQGuRxoZylLntrA5gV3_3g/edit" target="_blank" rel="noopener">Open the registry sheet</a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <h3>Copy-ready text</h3>
+      <div id="launch-templates" class="stack"></div>
+    </div>
+
+    <div class="card stack">
+      <h3>Weekly Matches issue</h3>
+      <p class="muted">Builds a draft from what is on the board right now. Example entries are labelled in the draft, so switch them off at the top of the page first if you want real entries only. Paste the result into a new Substack post and edit.</p>
+      <div class="row">
+        <button class="btn primary" data-act="gen-issue">Build this week's draft</button>
+        <button class="btn" data-act="copy" data-target="issue-out">Copy draft</button>
+        <button class="btn" data-act="dl-issue" id="dl-issue" hidden>Download .md</button>
+        <button class="btn" data-act="doc-issue" id="doc-issue" hidden>Save to Claude Docs</button>
+      </div>
+      <textarea id="issue-out" readonly placeholder="Press the first button to build the draft."></textarea>
+    </div>
+  </section>
+</div>
+<div id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- helpers ---------- */
+const $=(s,r)=>(r||document).querySelector(s);
+const $$=(s,r)=>Array.from((r||document).querySelectorAll(s));
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const LS={
+  get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+const pad=n=>String(n).padStart(2,'0');
+const dayKey=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const localStamp=d=>dayKey(d)+'T'+pad(d.getHours())+':'+pad(d.getMinutes())+':00';
+let toastT;
+function toast(msg){const t=$('#toast');t.textContent=msg;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>{t.hidden=true},4200)}
+const STOP=new Set(['and','the','of','for','to','a','an','in','on','with','my','me','i','how','basics','basic','learn','learning','help','skills','skill','new','first','some','about','your']);
+function tokens(s){return Array.from(new Set((String(s||'').toLowerCase().match(/[a-z0-9&+#]{2,}/g)||[]).filter(w=>!STOP.has(w))))}
+function overlap(a,b){const A=tokens(a),B=tokens(b);let n=0;A.forEach(x=>{if(B.some(y=>y===x||(x.length>3&&y.length>3&&(y.includes(x)||x.includes(y)))))n++});return n}
+function initials(n){const p=String(n||'?').replace(/\(example\)/i,'').trim().split(/\s+/);return((p[0]||'?')[0]+(p[1]?p[1][0]:'')).toUpperCase()}
+function hue(n){let h=0;String(n).split('').forEach(c=>{h=(h*31+c.charCodeAt(0))%3});return 'a'+h}
+function person(x){return String(x.handle||x.name||'').trim().toLowerCase()}
+
+/* ---------- example entries (shown only as examples, never stored) ---------- */
+const EX={
+  mentors:[
+    {id:'ex-m1',example:1,name:'Asha Verma',handle:'@asha-example',skills:'GD&T, drawing review, CAD',level:'Beginner',hours:4,langs:'English, Hindi',tz:'IST',pitch:'I review your first engineering drawing and explain every callout.',status:'Open'},
+    {id:'ex-m2',example:1,name:'Marcus Lee',handle:'@marcus-example',skills:'Writing, editing, Substack growth',level:'Intermediate',hours:3,langs:'English',tz:'SGT',pitch:'We cut your draft by a fifth and sharpen the first paragraph.',status:'Open'},
+    {id:'ex-m3',example:1,name:'Sana Qureshi',handle:'@sana-example',skills:'Freelance pricing, client contracts, invoicing',level:'Beginner',hours:2,langs:'English, Urdu, Hindi',tz:'IST',pitch:'Price your first project and write the quote together.',status:'Open'},
+    {id:'ex-m4',example:1,name:'Tomás Rivera',handle:'@tomas-example',skills:'Python, automation, spreadsheets',level:'Beginner',hours:4,langs:'English, Spanish',tz:'CST',pitch:'Automate one boring weekly report by the end of the month.',status:'Full'}
+  ],
+  offers:[
+    {id:'ex-o1',example:1,type:'Offer',skill:'CAD modelling in SolidWorks',details:'Parts and simple assemblies, from sketch to drawing.',name:'Ravi Kumar',handle:'@ravi-example'},
+    {id:'ex-o2',example:1,type:'Offer',skill:'Python automation',details:'Scripts that clean and report on spreadsheets.',name:'Tomás Rivera',handle:'@tomas-example'},
+    {id:'ex-o3',example:1,type:'Offer',skill:'Editing Substack drafts',details:'Structure, openings and headlines.',name:'Marcus Lee',handle:'@marcus-example'},
+    {id:'ex-o4',example:1,type:'Offer',skill:'Freelance pricing',details:'Hourly floor and project quotes.',name:'Sana Qureshi',handle:'@sana-example'},
+    {id:'ex-o5',example:1,type:'Offer',skill:'GD&T drawing review',details:'Datum schemes and feature control frames.',name:'Asha Verma',handle:'@asha-example'},
+    {id:'ex-n1',example:1,type:'Need',skill:'Python automation',details:'I want to stop copying numbers between sheets by hand.',name:'Ravi Kumar',handle:'@ravi-example'},
+    {id:'ex-n2',example:1,type:'Need',skill:'CAD modelling',details:'I design in my head and need to get it into a model.',name:'Tomás Rivera',handle:'@tomas-example'},
+    {id:'ex-n3',example:1,type:'Need',skill:'Freelance pricing',details:'Quoting my first paid editing job.',name:'Marcus Lee',handle:'@marcus-example'},
+    {id:'ex-n4',example:1,type:'Need',skill:'Editing Substack drafts',details:'A second pair of eyes on a long post.',name:'Sana Qureshi',handle:'@sana-example'},
+    {id:'ex-n5',example:1,type:'Need',skill:'Resume review',details:'Moving from fabrication into design roles.',name:'Neha Joshi',handle:'@neha-example'}
+  ],
+  questions:[
+    {id:'ex-q1',example:1,q:'How do I choose a tolerance for a press-fit shaft?',area:'Mechanical design',name:'Neha Joshi',solved:true},
+    {id:'ex-q2',example:1,q:'How long should my first Substack post be?',area:'Writing',name:'Ravi Kumar',solved:false}
+  ],
+  answers:[
+    {id:'ex-a1',example:1,qid:'ex-q1',name:'Asha Verma',text:'Start from a standard fit such as H7/p6 on a hole-basis system, then check the interference against your material and the wall thickness of the hub.'},
+    {id:'ex-a2',example:1,qid:'ex-q2',name:'Marcus Lee',text:'Aim for something a reader finishes in five to seven minutes, then cut anything that does not serve the one promise in your headline.'}
+  ],
+  requests:[]
+};
+
+const CATS=[
+  {k:'eng',label:'Engineering and CAD',w:['cad','gd&t','gdt','drawing','solidworks','catia','mechanical','design','ansys','engineering','tolerance']},
+  {k:'write',label:'Writing',w:['writing','write','editing','substack','newsletter','blog','storytelling']},
+  {k:'free',label:'Freelancing',w:['freelance','pricing','client','clients','contract','contracts','invoicing','business','startup']},
+  {k:'code',label:'Code and data',w:['python','code','coding','automation','excel','spreadsheets','spreadsheet','data','sql']},
+  {k:'career',label:'Career',w:['resume','cv','interview','career','job','portfolio']},
+  {k:'lang',label:'Languages',w:['english','hindi','spanish','urdu','language','speaking','communication']},
+  {k:'well',label:'Habits and focus',w:['burnout','stress','habits','routine','focus','wellbeing']}
+];
+
+/* ---------- store: shared database when available, this browser otherwise ---------- */
+const COLS=['mentors','offers','questions','answers','requests'];
+const store={
+  shared:false,myId:null,isOwner:false,canWrite:null,db:null,data:{},
+  init(){COLS.forEach(c=>{this.data[c]=LS.get('sc:local:'+c,[])})},
+  list(c){return this.data[c]||[]},
+  async connect(){
+    try{
+      if(!(window.claude&&window.claude.use))return;
+      const user=await window.claude.use('user');
+      if(user){
+        try{this.myId=await user.id()}catch(e){}
+        try{this.isOwner=await user.isOwner()}catch(e){}
+        try{this.canWrite=await user.can('data.write')}catch(e){}
+      }
+      const db=await window.claude.use('db');
+      if(!db)return;
+      this.db=db;this.shared=true;
+      COLS.forEach(c=>{this.data[c]=[]});
+      COLS.forEach(c=>{
+        db.collection(c).onSnapshot(snap=>{
+          this.data[c]=snap.docs.map(d=>Object.assign({id:d.id},d.data()));
+          schedule();
+        },err=>{
+          console.warn('db',c,err&&err.code);
+          if(this.shared){this.shared=false;this.init();setMode();schedule()}
+        });
+      });
+      setMode();
+    }catch(e){console.warn('connect',e)}
+  },
+  async add(c,obj){
+    obj.at=Date.now();
+    if(this.myId)obj.by=this.myId;
+    if(this.shared){const ref=await this.db.collection(c).add(obj);return ref.id}
+    const id='l'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+    this.data[c]=[Object.assign({id},obj)].concat(this.data[c]);
+    LS.set('sc:local:'+c,this.data[c]);schedule();return id;
+  },
+  async update(c,id,patch){
+    if(this.shared){await this.db.collection(c).doc(id).update(patch);return}
+    this.data[c]=this.data[c].map(x=>x.id===id?Object.assign({},x,patch):x);
+    LS.set('sc:local:'+c,this.data[c]);schedule();
+  },
+  async remove(c,id){
+    if(this.shared){await this.db.collection(c).doc(id).delete();return}
+    this.data[c]=this.data[c].filter(x=>x.id!==id);
+    LS.set('sc:local:'+c,this.data[c]);schedule();
+  },
+  mine(x){return !this.shared||this.isOwner||(x.by&&x.by===this.myId)}
+};
+function dbMessage(e){
+  const c=e&&e.code;
+  if(c==='invalid_argument')return 'Your access level can read the board but not post to it. Ask the page owner for Contributor access.';
+  if(c==='quota_exceeded')return 'The board is full. Ask the page owner to clear old entries.';
+  if(c==='resource_exhausted')return 'Too many requests at once. Wait a moment and try again.';
+  return 'Could not save. Try again in a moment.';
+}
+
+/* ---------- state ---------- */
+const state={
+  tab:'mentors',
+  cats:new Set(),
+  reqOpen:null,reqDraft:{},reqDone:{},
+  openAnswer:null,ansDraft:{},
+  sprint:LS.get('sc:sprint',null),openStep:{},
+  showEx:LS.get('sc:showEx',true),
+  link:LS.get('sc:link','')
+};
+function items(c){
+  const real=store.list(c).slice().sort((a,b)=>(b.at||0)-(a.at||0));
+  return state.showEx?real.concat(EX[c]):real;
+}
+
+/* ---------- mode pill ---------- */
+function setMode(){
+  const pill=$('#mode-pill');
+  $('#mode-text').textContent=store.shared?'Shared board, live':'Saved in this browser';
+  pill.classList.toggle('live',store.shared);
+  let note=store.shared
+    ?'Entries here are shared with everyone who can open this page.'
+    :'Your entries stay in this browser. Open the shared link while signed in to claude.ai to post to the shared board.';
+  if(store.shared&&store.canWrite===false)note='You can read the board. Posting needs Contributor access from the page owner.';
+  $('#mode-note').textContent=note;
+}
+
+/* ---------- counters ---------- */
+function learnState(){return LS.get('sc:learn',{done:{},task:{},quiz:{},days:[]})}
+function renderCounters(){
+  $('#c-mentors').textContent=store.list('mentors').length;
+  $('#c-needs').textContent=store.list('offers').filter(x=>x.type==='Need'&&x.status!=='Closed').length;
+  $('#c-sessions').textContent=store.list('requests').length;
+  $('#c-steps').textContent=Object.keys(learnState().done).length;
+}
+
+/* ---------- MENTORS ---------- */
+function renderCats(){
+  $('#f-cats').innerHTML=CATS.map(c=>'<button type="button" class="chip" data-act="cat" data-k="'+c.k+'" aria-pressed="'+state.cats.has(c.k)+'">'+esc(c.label)+'</button>').join('');
+}
+function mentorScore(m){
+  const q=tokens($('#f-q').value);
+  const text=(m.skills+' '+m.pitch+' '+(m.langs||'')).toLowerCase();
+  const mt=tokens(text);
+  let s=0;
+  q.forEach(t=>{if(mt.includes(t)||(t.length>2&&text.includes(t)))s+=3});
+  state.cats.forEach(k=>{const c=CATS.find(x=>x.k===k);if(c&&c.w.some(w=>mt.includes(w)))s+=2});
+  return s;
+}
+function renderMentors(){
+  const hasQuery=tokens($('#f-q').value).length>0||state.cats.size>0;
+  const level=$('#f-level').value;
+  let list=items('mentors').map(m=>({m,s:mentorScore(m)}));
+  if(hasQuery)list=list.filter(x=>x.s>0);
+  if(level)list=list.filter(x=>(x.m.level||'')===level);
+  list.sort((a,b)=>(b.s-a.s)||((a.m.status==='Full')-(b.m.status==='Full')));
+  $('#f-summary').textContent=list.length+(list.length===1?' mentor':' mentors')+(hasQuery||level?' fit your search':' listed');
+  const box=$('#mentor-list');
+  if(!list.length){
+    box.innerHTML='<div class="empty" style="grid-column:1/-1"><p><b>No mentor lists that yet.</b> Nobody has to be an expert. Post it as a need and the board will look for someone, or ask the room.</p><div class="row"><button class="btn" data-act="tab" data-tab="swap">Post a need</button><button class="btn" data-act="tab" data-tab="ask">Ask the room</button></div></div>';
+    return;
+  }
+  box.innerHTML=list.map(({m,s})=>mentorCard(m,s,hasQuery)).join('');
+  Object.keys(state.reqDraft).forEach(id=>{
+    const f=$('form[data-mid="'+CSS.escape(id)+'"]');
+    if(f)Object.entries(state.reqDraft[id]).forEach(([k,v])=>{if(f.elements[k])f.elements[k].value=v});
+  });
+}
+function mentorCard(m,s,hasQuery){
+  const skills=String(m.skills||'').split(',').map(x=>x.trim()).filter(Boolean);
+  const full=m.status==='Full';
+  const match=hasQuery?(s>=5?'<span class="badge hot">Strong match</span>':'<span class="badge hot">Possible match</span>'):'';
+  const done=state.reqDone[m.id];
+  let extra='';
+  if(done)extra=doneBox(m,done);
+  else if(state.reqOpen===m.id)extra=requestForm(m);
+  const own=store.mine(m)&&!m.example?'<button class="btn small" data-act="del" data-col="mentors" data-id="'+esc(m.id)+'">Remove listing</button>':'';
+  return '<article class="card mcard">'
+    +'<div class="mhead"><div class="avatar '+hue(m.name)+'" aria-hidden="true">'+esc(initials(m.name))+'</div>'
+    +'<div style="min-width:0"><div class="mname">'+esc(m.name)+'</div><div class="muted small">'+esc(m.handle||'')+'</div></div></div>'
+    +'<div class="row">'+(m.example?'<span class="badge ex">Example</span>':'')+'<span class="badge free">Free</span>'+(full?'<span class="badge ex">Full this month</span>':'<span class="badge free">Open</span>')+match+'</div>'
+    +'<div class="chips">'+skills.map(x=>'<span class="chip">'+esc(x)+'</span>').join('')+'</div>'
+    +'<p>'+esc(m.pitch)+'</p>'
+    +'<div class="meta"><span><b>'+esc(m.hours||'')+' h</b> a month</span><span>Teaches <b>'+esc(String(m.level||'').toLowerCase())+'</b></span><span>'+esc(m.langs||'')+'</span><span>'+esc(m.tz||'')+'</span></div>'
+    +(state.reqOpen===m.id||done?'':'<div class="row"><button class="btn primary small" data-act="req-open" data-id="'+esc(m.id)+'"'+(full?' disabled':'')+'>Request a free session</button>'+own+'</div>')
+    +extra+'</article>';
+}
+function defaultWhen(){const d=new Date();d.setDate(d.getDate()+1);d.setHours(18,0,0,0);return dayKey(d)+'T'+pad(d.getHours())+':'+pad(d.getMinutes())}
+function requestForm(m){
+  const dr=state.reqDraft[m.id]||{};
+  return '<form class="reqform" data-form="request" data-mid="'+esc(m.id)+'">'
+    +'<label>What do you want to achieve?<textarea name="goal" required maxlength="300" placeholder="One skill and one result, for example: read a drawing and list its tolerances"></textarea></label>'
+    +'<div class="row2"><label>Your name<input name="name" required maxlength="60"></label><label>Substack handle<input name="handle" maxlength="60" placeholder="@you"></label></div>'
+    +'<div class="row2"><label>Preferred start<input type="datetime-local" name="when" required value="'+esc(dr.when||defaultWhen())+'"></label>'
+    +'<label>Length<select name="mins"><option value="30">30 minutes</option><option value="45" selected>45 minutes</option><option value="60">60 minutes</option></select></label></div>'
+    +'<label>Format<select name="format"><option>Call</option><option>Chat</option><option>Async feedback</option></select></label>'
+    +(m.example?'<p class="muted small">This is an example mentor. The form works, but nothing is sent or saved.</p>':'')
+    +'<div class="row"><button class="btn primary" type="submit">Send free request</button><button class="btn" type="button" data-act="req-cancel">Cancel</button></div></form>';
+}
+function reqMessage(m,r){
+  return 'Hi '+m.name+', I found you on Skill Commons. I would like one free session on '+(String(m.skills).split(',')[0]||'your skill').trim()+'.\n\nGoal: '+r.goal+'\nPreferred time: '+r.when.replace('T',' ')+' ('+r.mins+' minutes, '+r.format+')\n\nThank you. I will pass it on by teaching something to the next learner.\n'+r.name+(r.handle?' ('+r.handle+')':'');
+}
+function doneBox(m,r){
+  return '<div class="done-box"><b>'+(m.example?'Practice request ready.':'Request saved.')+'</b>'
+    +'<p class="muted small">'+(m.example?'Nothing was sent, because this mentor is an example. ':'')+'Send the message below to '+esc(m.name)+' on Substack to confirm a time.</p>'
+    +'<pre class="mono small" id="msg-'+esc(m.id)+'" style="margin:0;white-space:pre-wrap;overflow-wrap:anywhere;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px">'+esc(reqMessage(m,r))+'</pre>'
+    +'<div class="row"><button class="btn small" data-act="copy" data-target="msg-'+esc(m.id)+'">Copy message</button>'
+    +(m.example?'':'<button class="btn small" data-act="cal" data-id="'+esc(m.id)+'">Add to Google Calendar</button>')
+    +'<button class="btn small" data-act="req-reset" data-id="'+esc(m.id)+'">Done</button></div></div>';
+}
+
+/* ---------- SWAP ---------- */
+function swapCard(x){
+  const own=store.mine(x)&&!x.example?'<button class="btn small" data-act="del" data-col="offers" data-id="'+esc(x.id)+'">Remove</button>':'';
+  const closed=x.status==='Closed';
+  const close=(store.mine(x)&&!x.example&&!closed)?'<button class="btn small" data-act="close-offer" data-id="'+esc(x.id)+'">Mark done</button>':'';
+  return '<article class="card sw-item"><div class="top"><strong>'+esc(x.skill)+'</strong><span class="row">'+(x.example?'<span class="badge ex">Example</span>':'')+(closed?'<span class="badge ex">Done</span>':'')+'</span></div>'
+    +(x.details?'<p class="muted">'+esc(x.details)+'</p>':'')
+    +'<div class="meta"><span><b>'+esc(x.name)+'</b></span><span>'+esc(x.handle||'')+'</span></div>'
+    +((own||close)?'<div class="row">'+close+own+'</div>':'')+'</article>';
+}
+function renderSwap(){
+  const all=items('offers').filter(x=>x.status!=='Closed');
+  const needs=all.filter(x=>x.type==='Need'),offers=all.filter(x=>x.type==='Offer');
+  $('#needs-list').innerHTML=needs.length?needs.map(swapCard).join(''):'<div class="empty">No open needs yet. Post the first one.</div>';
+  $('#offers-list').innerHTML=offers.length?offers.map(swapCard).join(''):'<div class="empty">No offers yet. What could you show someone in 30 minutes?</div>';
+  renderSwapFind(needs,offers);
+}
+function renderSwapFind(needs,offers){
+  const teach=$('#sw-teach').value.trim(),want=$('#sw-want').value.trim();
+  const box=$('#sw-results');
+  if(!teach&&!want){box.innerHTML='<p class="muted small">Type a skill on either side to see who fits.</p>';return}
+  const perfect=[],oneWay=[],theyWant=[];
+  const seen=new Set();
+  if(want){
+    offers.filter(o=>overlap(o.skill+' '+(o.details||''),want)>0).forEach(o=>{
+      const p=person(o);
+      const back=teach?needs.find(n=>person(n)===p&&overlap(n.skill,teach)>0):null;
+      if(back){perfect.push({o,n:back});seen.add(p)}else oneWay.push(o);
+    });
+  }
+  if(teach){
+    needs.filter(n=>overlap(n.skill+' '+(n.details||''),teach)>0&&!seen.has(person(n))).forEach(n=>theyWant.push(n));
+  }
+  let h='';
+  perfect.forEach(({o,n})=>{
+    h+='<div class="card"><div class="row" style="margin-bottom:10px"><span class="badge hot">Perfect swap</span>'+(o.example?'<span class="badge ex">Example</span>':'')+'</div>'
+      +'<div class="bridge"><div class="side"><span class="label">You teach</span><b>'+esc(n.skill)+'</b><span class="muted small">to '+esc(n.name)+'</span></div>'
+      +'<div class="arrows"><span>&rarr;</span><span>&larr;</span></div>'
+      +'<div class="side"><span class="label">They teach</span><b>'+esc(o.skill)+'</b><span class="muted small">'+esc(o.name)+' '+esc(o.handle||'')+'</span></div></div></div>';
+  });
+  oneWay.forEach(o=>{h+='<div class="card sw-item"><div class="row"><span class="badge free">They can teach you</span></div><strong>'+esc(o.skill)+'</strong><div class="meta"><span><b>'+esc(o.name)+'</b></span><span>'+esc(o.handle||'')+'</span></div></div>'});
+  theyWant.forEach(n=>{h+='<div class="card sw-item"><div class="row"><span class="badge free">You can help them</span></div><strong>'+esc(n.skill)+'</strong><div class="meta"><span><b>'+esc(n.name)+'</b></span><span>'+esc(n.handle||'')+'</span></div></div>'});
+  if(!h)h='<div class="empty"><p>Nobody matches yet. Post what you want to learn and the next person who offers it will show up here.</p></div>';
+  box.innerHTML=h;
+}
+
+/* ---------- LEARN ---------- */
+const SPRINTS=[
+  {id:'drawing',title:'Read a mechanical drawing',who:'For engineers, buyers and anyone handed a drawing',skill:'drawing review GD&T',steps:[
+    {t:'Start at the title block',m:8,lesson:'The title block, usually at the bottom right, names the part, material, scale, units, revision and drawing number. Check the revision first: working from an old revision is a common reason a part is made wrong. Next to it sits the projection symbol. First-angle projection is the standard in India and Europe, third-angle in the US, and mixing them up mirrors your views.',task:'Open any drawing and write down its revision, material and projection method.',q:'A US drawing shows the right-side view to the right of the front view. Which projection is it most likely using?',o:['First-angle','Third-angle','Isometric'],a:1,why:'In third-angle projection each view sits on the side you look from, so the right view is on the right. First-angle puts it on the opposite side.'},
+    {t:'Know the line types',m:7,lesson:'Thick continuous lines are visible edges. Thin dashed lines are hidden edges behind a surface. Thin lines made of long and short dashes are centrelines and mark the axis of holes and shafts. Thin continuous lines with arrowheads are dimension lines.',task:'Find one example of each line type on a drawing and name it.',q:'A thin line of long and short dashes through the middle of a hole is a…',o:['Hidden edge','Centreline','Dimension line'],a:1,why:'Long-short dashes mark an axis or centre. Hidden edges use evenly spaced short dashes.'},
+    {t:'Read a tolerance',m:10,lesson:'A size such as 25 ±0.1 allows any finished size from 24.9 to 25.1. Tolerances can be unequal: 20 +0.00 / −0.05 allows 19.95 to 20.00. A fit such as H7/g6 pairs a hole class with a shaft class. H7/g6 gives a clearance fit. H7/p6 gives an interference fit, used for press fits.',task:'Pick three dimensions from a drawing and write the smallest and largest allowed size for each.',q:'A shaft is dimensioned 20 +0.00 / −0.05. Which size is out of tolerance?',o:['19.97','20.00','20.03'],a:2,why:'The upper limit is 20.00, so 20.03 is too large. 19.97 and 20.00 sit inside the 19.95 to 20.00 band.'},
+    {t:'Decode a feature control frame',m:12,lesson:'GD&T controls form, orientation and position, not only size. A feature control frame reads left to right: the geometric symbol, the tolerance zone size, then the datum references in order of priority. A position tolerance of 0.2 to datums A, B and C means the feature axis must stay inside a 0.2 mm diameter cylinder located from those datums.',task:'Sketch a feature control frame for a hole with a position tolerance of 0.2 to datums A and B.',q:'In a feature control frame, which box gives the size of the tolerance zone?',o:['The first box','The second box','The last box'],a:1,why:'The first box holds the symbol, the second the tolerance value, and the boxes after it the datums.'}
+  ]},
+  {id:'post',title:'Write a post people finish',who:'For newsletter writers',skill:'writing editing Substack',steps:[
+    {t:'Name the reader and the promise',m:8,lesson:'Before drafting, finish this sentence: after reading this, one specific reader can do one specific thing. Everything in the post either supports that sentence or gets cut.',task:'Write your sentence in one line and keep it above your draft.',q:'Which headline makes the clearest promise?',o:['Thoughts on freelancing','How I priced my first CAD project and what I would change','Some lessons from this year'],a:1,why:'It names a situation and a payoff. The others do not tell a reader what they will get.'},
+    {t:'Open with something concrete',m:8,lesson:'Readers decide from the subject line, the preview text and the first few lines whether to continue. Start with a scene, a number or a mistake rather than background. Cut any opening that only announces what the post will cover.',task:'Rewrite your first paragraph so it starts with a specific moment or figure.',q:'Which opening is strongest?',o:['In this post I will share some thoughts about pricing.','The invoice sat unpaid for 47 days before I understood my mistake.','Pricing is an important topic for freelancers.'],a:1,why:'It starts with a specific event and makes the reader ask what the mistake was.'},
+    {t:'Shape it for skimming',m:10,lesson:'Give each section one idea, use subheads that make sense on their own, keep paragraphs to a few lines, and follow each claim with an example. Then cut a fifth of the words.',task:'Delete one sentence from every paragraph and check that each still works.',q:'What should follow a claim?',o:['Another claim','An example','A definition'],a:1,why:'An example proves the claim and gives the reader something to picture.'},
+    {t:'End with one next step',m:9,lesson:'Finish with one action: reply with your answer, try the exercise, or send the post to someone who needs it. Substack gives you a subscribe button, restacks and Notes to carry a post further, so tell readers which one to use.',task:'Write your last line as a single instruction a reader can do in a minute.',q:'What should the closing paragraph do?',o:['Summarise every point again','Ask for one specific action','Apologise for the length'],a:1,why:'One clear action is easier to follow than a summary or an apology.'}
+  ]},
+  {id:'price',title:'Price your freelance work',who:'For anyone selling their skill',skill:'freelance pricing clients',steps:[
+    {t:'Find your hourly floor',m:10,lesson:'Add the income you want for the year to your yearly business costs, then divide by the hours you can really bill. For example ₹12,00,000 income plus ₹1,20,000 costs is ₹13,20,000. Divided by 1,000 billable hours, that is ₹1,320 an hour. A rate below your floor means you earn less than you planned.',task:'Calculate your own floor with your real numbers.',q:'Income target ₹6,00,000 plus costs ₹60,000, with 800 billable hours. What is the hourly floor?',o:['₹750','₹825','₹900'],a:1,why:'₹6,60,000 divided by 800 is ₹825.'},
+    {t:'Count billable hours honestly',m:8,lesson:'A year has about 2,000 working hours, but finding clients, writing quotes, invoicing and revisions are unpaid. Plan on roughly half to two thirds of your working time being billable and use that figure in the formula, not the full 2,000.',task:'List your unpaid tasks in a normal week and estimate their hours.',q:'Why use billable hours and not all working hours?',o:['Clients prefer it','Unpaid work still has to be covered by your rate','It lowers your tax'],a:1,why:'Time spent finding and managing work is paid for only through the rate on the hours you bill.'},
+    {t:'Quote by project',m:10,lesson:'Estimate hours for each task, multiply by your rate, then add 20 to 30 percent for revisions and surprises. Write the scope and the number of included revision rounds into the quote, so extra work becomes a separate, priced request.',task:'Break one past job into tasks and estimate the hours for each.',q:'A job is 20 hours at ₹1,000 an hour with a 25 percent buffer. What is the quote?',o:['₹20,000','₹25,000','₹30,000'],a:1,why:'₹20,000 plus 25 percent is ₹25,000.'},
+    {t:'Put terms in writing',m:8,lesson:'A good quote states scope, deliverables, deadline, revision rounds and payment terms. Asking for a part payment up front, such as half, protects both sides and shows who is serious.',task:'Write a five-line quote for a job you could sell this month.',q:'What does asking for an advance mainly protect?',o:['Your invoice format','Both sides from walk-aways and unpaid work','Your tax return'],a:1,why:'An advance commits the client and covers your first hours of work.'}
+  ]},
+  {id:'learn',title:'Learn anything faster',who:'For every skill on this site',skill:'learning habits focus',steps:[
+    {t:'Set a one-week target',m:6,lesson:'A goal like learn Python does not tell you what to do tomorrow. Write a target you can test: by Friday I can read a drawing and list its tolerances. A small target with a test beats a large one with none.',task:'Write your target as: by a named day I can do one observable thing.',q:'Which target is testable?',o:['Get better at CAD','By Friday I can model a bracket from a drawing','Understand design'],a:1,why:'You can check on Friday whether you did it.'},
+    {t:'Recall before you reread',m:8,lesson:'Closing your notes and writing what you remember strengthens memory more than rereading does. This is called retrieval practice. The gaps you find are exactly what to study next.',task:'Close this page and write three things you remember from the last step.',q:'Which is the stronger practice?',o:['Rereading your notes twice','Writing from memory, then checking','Highlighting key lines'],a:1,why:'Pulling facts out of memory is the work that builds the memory.'},
+    {t:'Space your reviews',m:6,lesson:'Review a topic after one day, then three days, then a week. Each review is easier, and the memory lasts longer than if you had put all the sessions into one evening.',task:'Put two review sessions for this skill in your calendar.',q:'You studied on Monday. Which schedule follows spacing?',o:['Review on Monday night only','Tuesday, Thursday, the next Monday','Ten hours on Sunday'],a:1,why:'One day, three days and a week after the first session spreads the reviews out.'},
+    {t:'Teach it to someone',m:10,lesson:'Explain the idea in plain words to a person who knows nothing about it. Where you stall is where you do not understand it yet. Teaching is also how a community like this keeps going: today\'s learner is next month\'s mentor.',task:'Explain one thing from this sprint to a friend, or post it on the swap board as an offer.',q:'You stall while explaining an idea. What does that tell you?',o:['The listener is not paying attention','You have found a gap in your understanding','The topic is too hard'],a:1,why:'A stall points to the exact piece you still need to study.'}
+  ]}
+];
+function sprintDone(s){const L=learnState();return s.steps.filter((_,i)=>L.done[s.id+':'+i]).length}
+function renderLearn(){
+  const L=learnState();
+  const ids=Object.keys(L.done).length;
+  let first=0;Object.values(L.quiz).forEach(q=>{if(q&&q.first)first++});
+  $('#l-xp').textContent=ids*10+first*5;
+  $('#l-done').textContent=ids;
+  const days=new Set(L.days||[]);let streak=0;const d=new Date();
+  if(!days.has(dayKey(d)))d.setDate(d.getDate()-1);
+  while(days.has(dayKey(d))){streak++;d.setDate(d.getDate()-1)}
+  $('#l-streak').textContent=streak;
+  $('#sprints').innerHTML=SPRINTS.map(s=>{
+    const n=sprintDone(s),pct=Math.round(n/s.steps.length*100);
+    const mins=s.steps.reduce((a,b)=>a+b.m,0);
+    return '<button type="button" class="sprint" data-act="sprint" data-id="'+s.id+'" aria-pressed="'+(state.sprint===s.id)+'">'
+      +'<span class="label">'+s.steps.length+' steps, about '+mins+' min</span><h4>'+esc(s.title)+'</h4><span class="muted small">'+esc(s.who)+'</span>'
+      +'<span class="bar"><i style="width:'+pct+'%"></i></span><span class="mono small">'+n+' of '+s.steps.length+' done</span></button>';
+  }).join('');
+  const s=SPRINTS.find(x=>x.id===state.sprint);
+  if(!s){$('#sprint-view').innerHTML='<div class="empty">Pick a sprint above to start. Your progress is saved in this browser.</div>';return}
+  const n=sprintDone(s),pct=n/s.steps.length;
+  const C=2*Math.PI*30;
+  let h='<div class="card row" style="gap:16px"><svg class="ring" viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="30" fill="none" stroke="var(--surface-2)" stroke-width="8"/><circle class="fg" cx="36" cy="36" r="30" fill="none" stroke="var(--accent)" stroke-width="8" stroke-linecap="round" transform="rotate(-90 36 36)" stroke-dasharray="'+(C*pct).toFixed(1)+' '+C.toFixed(1)+'"/><text x="36" y="41" text-anchor="middle">'+n+'/'+s.steps.length+'</text></svg>'
+    +'<div style="flex:1;min-width:200px"><h3>'+esc(s.title)+'</h3><p class="muted">Finish the task and answer the check question to complete a step.</p></div>'
+    +'<button class="btn" data-act="ask-mentor" data-id="'+s.id+'">Ask a mentor about this</button></div>';
+  s.steps.forEach((st,i)=>{
+    const key=s.id+':'+i,done=!!L.done[key];
+    const open=state.openStep[s.id]===i||(state.openStep[s.id]===undefined&&i===firstOpen(s,L));
+    const qz=L.quiz[key]||{};
+    h+='<div class="step'+(done?' done':'')+'"><button type="button" class="sh" data-act="step" data-s="'+s.id+'" data-i="'+i+'" aria-expanded="'+open+'">'
+      +'<span class="num">'+(done?'&#10003;':(i+1))+'</span><span style="flex:1;min-width:0"><b>'+esc(st.t)+'</b></span><span class="mono small muted">'+st.m+' min</span></button>';
+    if(open){
+      h+='<div class="sb"><p>'+esc(st.lesson)+'</p>'
+        +'<label class="tryit" style="font-weight:400"><input type="checkbox" data-act="task" data-key="'+key+'"'+(L.task[key]?' checked':'')+'><span><b>Try it.</b> '+esc(st.task)+'</span></label>'
+        +'<div class="stack"><b>'+esc(st.q)+'</b><div class="opts">'
+        +st.o.map((o,j)=>{
+          let cls='opt';
+          if(qz.choice===j)cls+=qz.right?' right':' wrong';
+          return '<button type="button" class="'+cls+'" data-act="answer" data-s="'+s.id+'" data-i="'+i+'" data-j="'+j+'">'+esc(o)+'</button>';
+        }).join('')+'</div>'
+        +(qz.choice!==undefined?'<p class="small" style="color:'+(qz.right?'var(--accent)':'var(--hot)')+'"><b>'+(qz.right?'Right. ':'Not quite. ')+'</b>'+(qz.right?esc(st.why):'Read the lesson again and pick another answer.')+'</p>':'')
+        +'</div>'
+        +(done?'<p class="small" style="color:var(--accent)"><b>Step complete.</b></p>':'<p class="muted small">Tick the task and answer correctly to finish this step.</p>')
+        +'</div>';
+    }
+    h+='</div>';
+  });
+  if(n===s.steps.length){
+    h+='<div class="card badge-big"><div class="medal" aria-hidden="true">'+esc(s.title.charAt(0))+'</div><div class="stack"><h3>Sprint complete</h3><p class="muted">Now pass it on. Offer this skill on the swap board, or ask a mentor to review something you made.</p><div class="row"><button class="btn primary" data-act="pass-on" data-id="'+s.id+'">Offer this skill</button><button class="btn" data-act="ask-mentor" data-id="'+s.id+'">Ask a mentor to review my work</button></div></div></div>';
+  }
+  $('#sprint-view').innerHTML=h;
+}
+function firstOpen(s,L){for(let i=0;i<s.steps.length;i++)if(!L.done[s.id+':'+i])return i;return -1}
+function checkStep(sid,i){
+  const L=learnState(),key=sid+':'+i,qz=L.quiz[key];
+  if(L.task[key]&&qz&&qz.right&&!L.done[key]){
+    L.done[key]=1;
+    L.days=Array.from(new Set((L.days||[]).concat(dayKey(new Date()))));
+    LS.set('sc:learn',L);
+    toast('Step complete. +10 points');
+  }
+}
+
+/* ---------- ASK ---------- */
+function renderAsk(){
+  const qs=items('questions');
+  const ans=items('answers');
+  const box=$('#q-list');
+  if(!qs.length){box.innerHTML='<div class="empty">No questions yet. Ask the first one.</div>';return}
+  box.innerHTML=qs.map(q=>{
+    const a=ans.filter(x=>x.qid===q.id).sort((x,y)=>(x.at||0)-(y.at||0));
+    const mineQ=store.mine(q)&&!q.example;
+    const open=state.openAnswer===q.id;
+    return '<article class="card qcard"><div class="row">'+(q.example?'<span class="badge ex">Example</span>':'')+(q.solved?'<span class="badge free">Solved</span>':'<span class="badge hot">Open</span>')+(q.area?'<span class="chip">'+esc(q.area)+'</span>':'')+'</div>'
+      +'<div class="q">'+esc(q.q)+'</div><div class="muted small">Asked by '+esc(q.name)+'</div>'
+      +(a.length?'<div class="stack">'+a.map(x=>'<div class="ans"><span>'+esc(x.text)+'</span><span class="muted small">'+esc(x.name)+(x.example?' (example)':'')+'</span></div>').join('')+'</div>':'<p class="muted small">No answers yet.</p>')
+      +(open?'<form data-form="answer" data-qid="'+esc(q.id)+'"><label>Your answer<textarea name="text" required maxlength="500">'+esc((state.ansDraft[q.id]||{}).text||'')+'</textarea></label><label>Your name<input name="name" required maxlength="60" value="'+esc((state.ansDraft[q.id]||{}).name||'')+'"></label><div class="row"><button class="btn primary" type="submit">Post answer</button><button class="btn" type="button" data-act="ans-close">Cancel</button></div></form>'
+        :'<div class="row"><button class="btn small" data-act="ans-open" data-id="'+esc(q.id)+'">Answer this</button>'
+          +(mineQ&&!q.solved?'<button class="btn small" data-act="solve" data-id="'+esc(q.id)+'">Mark solved</button>':'')
+          +(mineQ?'<button class="btn small" data-act="del" data-col="questions" data-id="'+esc(q.id)+'">Remove</button>':'')+'</div>')
+      +'</article>';
+  }).join('');
+}
+
+/* ---------- LAUNCH ---------- */
+const CHECKS=[
+  ['link','Share this page and paste its link above','Open the share menu on this page, copy the link, paste it in the box.'],
+  ['about','Add the link to your Substack About page','Use the About text below.'],
+  ['pin','Pin a Note announcing free mentorship','Notes reach readers and non-subscribers. Pin the first one.'],
+  ['welcome','Add one paragraph to your welcome email','Every new subscriber sees it.'],
+  ['mentors','Invite three people you trust to list as mentors','The board needs mentors before learners.'],
+  ['issue','Send the first Matches issue','Build the draft in the section below.'],
+  ['recs','Ask two newsletters to share it and recommend each other','Use the message for other writers below.'],
+  ['thread','Start a weekly chat thread for quick questions','A pinned weekly thread keeps the room active.']
+];
+function link(){return state.link||'[your link]'}
+function templates(){
+  const L=link();
+  const need=items('offers').find(x=>x.type==='Need'&&x.status!=='Closed'&&!x.example);
+  const needText=need?need.skill:'a skill you know well';
+  return [
+    ['About page','tpl-about','Skill Commons is the free skill-sharing corner of this newsletter. Mentors give an hour or two a month. Learners pick one skill, book a free session and pass it on. Offer a skill, ask for help or find a mentor here: '+L],
+    ['Welcome email paragraph','tpl-welcome','One more thing. If there is something you want to learn, or something you can teach, join Skill Commons. It is free: '+L+'\nReply to this email and tell me which one you picked.'],
+    ['Note: what can you teach','tpl-n1','What is one thing you could teach in 30 minutes? Post it on the swap board and someone will want it: '+L],
+    ['Note: call for mentors','tpl-n2','I am looking for three mentors this month. One hour, any skill, free for the learner. List yourself here: '+L],
+    ['Note: open need','tpl-n3','This week\'s open need: someone who can help with '+needText+'. If that is you, say so here: '+L],
+    ['Note: learning sprints','tpl-n4','Four short steps to read a mechanical drawing, price a freelance job, or write a post people finish. Free, with a mentor if you get stuck: '+L],
+    ['Message to other writers','tpl-dm','Hi, I run Skill Commons, a free skill exchange for newsletter readers. Would you add the link to your About page or share it in a Note? In return I will feature your newsletter in the weekly Matches issue. '+L]
+  ];
+}
+function renderLaunch(){
+  const done=LS.get('sc:checks',{});
+  $('#launch-checks').innerHTML=CHECKS.map(c=>'<label class="check'+(done[c[0]]?' on':'')+'"><input type="checkbox" data-act="check" data-k="'+c[0]+'"'+(done[c[0]]?' checked':'')+'><span><b>'+esc(c[1])+'</b><br><span class="muted small">'+esc(c[2])+'</span></span></label>').join('');
+  $('#launch-templates').innerHTML=templates().map(t=>'<div class="tpl"><div class="tpl-h"><b class="small">'+esc(t[0])+'</b><button class="btn small" data-act="copy" data-target="'+t[1]+'">Copy</button></div><pre id="'+t[1]+'">'+esc(t[2])+'</pre></div>').join('');
+}
+function buildIssue(){
+  const L=link();
+  const tag=x=>x.example?' (example)':'';
+  const needs=items('offers').filter(x=>x.type==='Need'&&x.status!=='Closed').slice(0,6);
+  const mentors=items('mentors').filter(x=>x.status!=='Full').slice(0,5);
+  const week=Date.now()-7*864e5;
+  const sessions=store.list('requests').filter(r=>(r.at||0)>=week).length;
+  const qs=items('questions');
+  const q=qs.find(x=>!x.solved)||qs[0];
+  const qa=q?items('answers').filter(a=>a.qid===q.id)[0]:null;
+  let md='# Skill Commons: this week\'s matches\n\n_Free mentorship and skill swaps from our readers._\n\n';
+  md+='## Open needs\n'+(needs.length?needs.map(n=>'- **'+n.skill+'**'+tag(n)+', asked by '+n.name+(n.details?'. '+n.details:'')).join('\n'):'- No open needs this week. Post one and we will find someone.')+'\n\n';
+  md+='## Mentors with room this month\n'+(mentors.length?mentors.map(m=>'- **'+m.name+'**'+tag(m)+': '+m.skills+'. '+m.pitch+' ('+m.hours+' hours a month)').join('\n'):'- No mentors listed yet. Reply to this email to be the first.')+'\n\n';
+  md+='## Sessions\n'+sessions+' free '+(sessions===1?'session was':'sessions were')+' requested in the last seven days.\n\n';
+  if(q){md+='## Question of the week\n> '+q.q+'\n\n'+(qa?qa.text+' ('+qa.name+tag(qa)+')':'Nobody has answered yet. Can you?')+'\n\n'}
+  md+='## Join in\nOffer a skill, ask for help or book a free mentor session: '+L+'\n';
+  return md;
+}
+
+/* ---------- copy / download / calendar ---------- */
+async function copyFrom(id){
+  const el=document.getElementById(id);if(!el)return;
+  const text=('value' in el&&el.tagName==='TEXTAREA')?el.value:el.textContent;
+  if(!text){toast('Nothing to copy yet');return}
+  try{await navigator.clipboard.writeText(text);toast('Copied')}
+  catch(e){
+    try{
+      if(el.tagName==='TEXTAREA'){el.focus();el.select()}
+      else{const r=document.createRange();r.selectNodeContents(el);const s=window.getSelection();s.removeAllRanges();s.addRange(r)}
+      toast('Selected. Press Ctrl or Cmd + C to copy.');
+    }catch(e2){toast('Copy is blocked here. Select the text and copy it.')}
+  }
+}
+let mcpP=null;
+function getMcp(){
+  if(!mcpP)mcpP=(window.claude&&window.claude.use?window.claude.use('mcp'):Promise.resolve(null)).catch(()=>null);
+  return mcpP;
+}
+function mcpMessage(e){
+  switch(e&&e.code){
+    case 'approval_required':return 'Claude needs your approval to do this. Allow it when claude.ai asks.';
+    case 'not_in_manifest':return 'This page is not allowed to use that connector for you. Re-open the page and allow it.';
+    case 'server_not_connected':return 'That connector is not set up. Add it in claude.ai Settings, then Connectors.';
+    case 'needs_reauth':return 'Reconnect that connector in claude.ai Settings, then Connectors.';
+    case 'selection_required':return 'Choose which account to use when claude.ai asks.';
+    default:return 'That did not work. Try again in a moment.';
+  }
+}
+async function addToCalendar(mid){
+  const r=state.reqDone[mid];
+  const m=items('mentors').find(x=>x.id===mid);
+  if(!r||!m)return;
+  const mcp=await getMcp();
+  if(!mcp){toast('Calendar is available when you open this page inside claude.ai.');return}
+  const parts=r.when.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
+  if(!parts){toast('Pick a valid start time first.');return}
+  const start=new Date(+parts[1],+parts[2]-1,+parts[3],+parts[4],+parts[5]);
+  const end=new Date(start.getTime()+(+r.mins||45)*60000);
+  try{
+    await mcp.callTool('Google Calendar','create_event',{
+      summary:'Skill Commons: '+(String(m.skills).split(',')[0]||'session').trim()+' with '+m.name,
+      startTime:localStamp(start),endTime:localStamp(end),
+      description:'Free mentoring session from Skill Commons.\nGoal: '+r.goal+'\nFormat: '+r.format,
+      addGoogleMeetUrl:r.format==='Call'
+    });
+    toast('Added to your Google Calendar');
+  }catch(e){toast(mcpMessage(e))}
+}
+async function saveIssueFile(){
+  const md=$('#issue-out').value;if(!md)return;
+  try{
+    if(window.claude&&window.claude.use){
+      const dl=await window.claude.use('downloads');
+      if(dl){await dl.save({filename:'skill-commons-matches.md',data:md});toast('Saved');return}
+    }
+    const url=URL.createObjectURL(new Blob([md],{type:'text/markdown;charset=utf-8'}));
+    const a=document.createElement('a');a.href=url;a.download='skill-commons-matches.md';a.click();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Draft downloaded');
+  }catch(e){if(!e||e.code!=='declined')toast('Could not save the file. Use Copy draft instead.')}
+}
+async function saveIssueDoc(){
+  const md=$('#issue-out').value;if(!md)return;
+  const mcp=await getMcp();
+  if(!mcp){toast('Saving to Claude Docs works when you open this page inside claude.ai.');return}
+  try{
+    const res=await mcp.callTool('Claude Docs','batch',{container:{kind:'project',create:{name:'Skill Commons weekly matches',doc:{markdown:md}}},batch:[]});
+    const url=res&&res.payload&&res.payload.url;
+    toast(url?'Saved to Claude Docs':'Saved to Claude Docs. Look for "Skill Commons weekly matches".');
+  }catch(e){toast(e&&e.code==='tool_error'?'Claude Docs refused the draft. Remove any images or tables and try again.':mcpMessage(e))}
+}
+
+/* ---------- navigation & events ---------- */
+const TABS=['mentors','swap','learn','ask','launch'];
+function go(tab){
+  if(TABS.indexOf(tab)<0)return;
+  state.tab=tab;
+  TABS.forEach(t=>{
+    $('#p-'+t).hidden=(t!==tab);
+    $('#t-'+t).setAttribute('aria-selected',String(t===tab));
+  });
+  window.scrollTo({top:0});
+}
+let raf=0;
+function schedule(){if(raf)return;raf=requestAnimationFrame(()=>{raf=0;renderAll()})}
+function renderAll(){renderCounters();renderMentors();renderSwap();renderLearn();renderAsk();renderLaunch()}
+
+document.addEventListener('click',async e=>{
+  const el=e.target.closest('[data-act]');if(!el)return;
+  const act=el.dataset.act;
+  if(act==='tab'){go(el.dataset.tab);return}
+  if(act==='cat'){const k=el.dataset.k;state.cats.has(k)?state.cats.delete(k):state.cats.add(k);renderCats();renderMentors();return}
+  if(act==='req-open'){state.reqOpen=el.dataset.id;renderMentors();return}
+  if(act==='req-cancel'){state.reqOpen=null;renderMentors();return}
+  if(act==='req-reset'){delete state.reqDone[el.dataset.id];delete state.reqDraft[el.dataset.id];state.reqOpen=null;renderMentors();return}
+  if(act==='cal'){addToCalendar(el.dataset.id);return}
+  if(act==='copy'){copyFrom(el.dataset.target);return}
+  if(act==='del'){
+    try{await store.remove(el.dataset.col,el.dataset.id);toast('Removed')}catch(err){toast(dbMessage(err))}
+    return;
+  }
+  if(act==='close-offer'){try{await store.update('offers',el.dataset.id,{status:'Closed'});toast('Marked done')}catch(err){toast(dbMessage(err))}return}
+  if(act==='solve'){try{await store.update('questions',el.dataset.id,{solved:true});toast('Marked solved')}catch(err){toast(dbMessage(err))}return}
+  if(act==='ans-open'){state.openAnswer=el.dataset.id;renderAsk();return}
+  if(act==='ans-close'){state.openAnswer=null;renderAsk();return}
+  if(act==='sprint'){state.sprint=el.dataset.id;LS.set('sc:sprint',state.sprint);renderLearn();return}
+  if(act==='step'){const s=el.dataset.s,i=+el.dataset.i;state.openStep[s]=(state.openStep[s]===i?-1:i);renderLearn();return}
+  if(act==='answer'){
+    const s=SPRINTS.find(x=>x.id===el.dataset.s),i=+el.dataset.i,j=+el.dataset.j,key=s.id+':'+i;
+    const L=learnState(),prev=L.quiz[key];
+    const right=s.steps[i].a===j;
+    L.quiz[key]={choice:j,right:right,first:prev?!!prev.first:right};
+    LS.set('sc:learn',L);checkStep(s.id,i);renderLearn();renderCounters();return;
+  }
+  if(act==='ask-mentor'){
+    const s=SPRINTS.find(x=>x.id===el.dataset.id);
+    $('#f-q').value=s.skill;state.cats.clear();renderCats();go('mentors');renderMentors();return;
+  }
+  if(act==='pass-on'){
+    const s=SPRINTS.find(x=>x.id===el.dataset.id);
+    go('swap');$('#postbox').open=true;
+    const f=$('#offer-form');f.elements.type.value='Offer';f.elements.skill.value=s.title;f.elements.skill.focus();return;
+  }
+  if(act==='gen-issue'){
+    $('#issue-out').value=buildIssue();
+    $('#dl-issue').hidden=false;$('#doc-issue').hidden=!(window.claude&&window.claude.use);return;
+  }
+  if(act==='dl-issue'){saveIssueFile();return}
+  if(act==='doc-issue'){saveIssueDoc();return}
+});
+document.addEventListener('change',e=>{
+  const el=e.target;
+  if(el.dataset&&el.dataset.act==='task'){
+    const L=learnState(),key=el.dataset.key;
+    if(el.checked)L.task[key]=1;else delete L.task[key];
+    LS.set('sc:learn',L);
+    const [sid,i]=key.split(':');checkStep(sid,+i);renderLearn();renderCounters();return;
+  }
+  if(el.dataset&&el.dataset.act==='check'){
+    const c=LS.get('sc:checks',{});
+    if(el.checked)c[el.dataset.k]=1;else delete c[el.dataset.k];
+    LS.set('sc:checks',c);renderLaunch();return;
+  }
+  if(el.id==='f-level')renderMentors();
+});
+document.addEventListener('input',e=>{
+  const el=e.target;
+  if(el.id==='f-q'){renderMentors();return}
+  if(el.id==='sw-teach'||el.id==='sw-want'){renderSwap();return}
+  if(el.id==='l-link'){state.link=el.value.trim();LS.set('sc:link',state.link);renderLaunch();return}
+  const f=el.closest&&el.closest('form[data-form="request"]');
+  if(f&&el.name){const id=f.dataset.mid;state.reqDraft[id]=state.reqDraft[id]||{};state.reqDraft[id][el.name]=el.value}
+  const a=el.closest&&el.closest('form[data-form="answer"]');
+  if(a&&el.name){const id=a.dataset.qid;state.ansDraft[id]=state.ansDraft[id]||{};state.ansDraft[id][el.name]=el.value}
+});
+$('#ex-toggle').addEventListener('change',e=>{state.showEx=e.target.checked;LS.set('sc:showEx',state.showEx);renderAll()});
+
+const forms={
+  async mentor(f){
+    const v=Object.fromEntries(new FormData(f).entries());
+    const obj={name:v.name.trim(),handle:v.handle.trim(),skills:v.skills.trim(),level:v.level,hours:+v.hours,langs:v.langs.trim(),tz:v.tz.trim(),pitch:v.pitch.trim(),status:'Open'};
+    try{await store.add('mentors',obj);f.reset();$('#become').open=false;toast('You are listed as a free mentor. Thank you.')}catch(e){toast(dbMessage(e))}
+  },
+  async offer(f){
+    const v=Object.fromEntries(new FormData(f).entries());
+    const obj={type:v.type,skill:v.skill.trim(),details:v.details.trim(),name:v.name.trim(),handle:v.handle.trim(),status:'Open'};
+    try{await store.add('offers',obj);f.reset();$('#postbox').open=false;toast(obj.type==='Offer'?'Offer posted':'Need posted')}catch(e){toast(dbMessage(e))}
+  },
+  async question(f){
+    const v=Object.fromEntries(new FormData(f).entries());
+    try{await store.add('questions',{q:v.q.trim(),area:v.area.trim(),name:v.name.trim(),solved:false});f.reset();$('#askbox').open=false;toast('Question posted')}catch(e){toast(dbMessage(e))}
+  },
+  async answer(f){
+    const v=Object.fromEntries(new FormData(f).entries());
+    const qid=f.dataset.qid;
+    if(String(qid).indexOf('ex-')===0){toast('That is an example question. Post your own to get real answers.');state.openAnswer=null;renderAsk();return}
+    try{await store.add('answers',{qid:qid,text:v.text.trim(),name:v.name.trim()});delete state.ansDraft[qid];state.openAnswer=null;toast('Answer posted')}catch(e){toast(dbMessage(e))}
+  },
+  async request(f){
+    const v=Object.fromEntries(new FormData(f).entries());
+    const mid=f.dataset.mid;
+    const m=items('mentors').find(x=>x.id===mid);if(!m)return;
+    const r={goal:v.goal.trim(),name:v.name.trim(),handle:v.handle.trim(),when:v.when,mins:+v.mins,format:v.format};
+    if(!m.example){
+      try{await store.add('requests',{mentorId:mid,mentorName:m.name,goal:r.goal,name:r.name,handle:r.handle,when:r.when,mins:r.mins,format:r.format})}
+      catch(e){toast(dbMessage(e));return}
+    }
+    state.reqDone[mid]=r;state.reqOpen=null;renderMentors();
+  }
+};
+document.addEventListener('submit',e=>{
+  const f=e.target.closest('form[data-form]');if(!f)return;
+  e.preventDefault();
+  const fn=forms[f.dataset.form];if(fn)fn(f);
+});
+
+/* ---------- boot ---------- */
+store.init();
+$('#ex-toggle').checked=!!state.showEx;
+$('#l-link').value=state.link;
+renderCats();
+setMode();
+renderAll();
+const h=(location.hash||'').replace('#','');
+if(TABS.indexOf(h)>=0)go(h);
+store.connect().then(()=>{setMode();renderAll()});
+})();
+</script>
+
+</body></html>
+
